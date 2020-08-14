@@ -3,12 +3,12 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.Cosmos;
+//using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 //using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
-using Microsoft.Azure.Documents.Client;
+//using Microsoft.Azure.Documents.Client;
 using Newtonsoft.Json;
 using System.Net.Http;
 //using System.Collections.Generic;
@@ -37,15 +37,11 @@ namespace BFYOC
 
     public static class GetRating
     {
-
-        //Reusable instance of ItemClient which represents the connection to a Cosmos endpoint
-        private static Container container = null;
-
         private static readonly HttpClient client = new HttpClient();
 
         [FunctionName("GetRating")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ratings/{ratingId}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "rating/{ratingId}")] HttpRequest req,
             [CosmosDB( 
                 databaseName: "RatingsAPI", 
                 collectionName: "Container1", 
