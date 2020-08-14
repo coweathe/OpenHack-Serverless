@@ -51,7 +51,7 @@ namespace BFYOC
                 collectionName: "Container1", 
                 ConnectionStringSetting = "myCosmosDb",
                 Id = "{ratingId}",
-                PartitionKey = "{Id}")] Rating rating,
+                PartitionKey = "{ratingId}")] Rating rating,
             ILogger log)
         
         {
@@ -60,10 +60,9 @@ namespace BFYOC
                 log.LogInformation("C# HTTP trigger function processed a request.");
 
                 // Grab data from body
-                string requestBody = new StreamReader(req.Body).ReadToEnd();
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 dynamic data = JsonConvert.DeserializeObject(requestBody);
-
-                log.LogInformation($"ratingId: {data.ratingId} ");
+                //log.LogInformation($"ratingId: {data.ratingId} ");
  
                 if(rating == null) 
                 {
@@ -76,19 +75,8 @@ namespace BFYOC
                 {
                     log.LogInformation($"Found rating, productId={rating.productId}");
 
-                    //Read document
-                    ItemResponse<Rating> response = await container.ReadItemAsync<Rating>(
-                        partitionKey: new PartitionKey("icecreamratingsdb"),
-                        id: "{ratingId}");
-
-
-                    //Return payload
-                    Rating readRating = (Rating)response;                 
-
-                    //var docUri = UriFactory.CreateDocumentUri()
-
                 }
-                return new OkResult();
+                return new OkObjectResult(rating);
             }
             
             catch(Exception e)
