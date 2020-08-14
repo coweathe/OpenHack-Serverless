@@ -40,7 +40,6 @@ namespace BFYOC
 
     public static class GetRatings
     {
-
         private static readonly HttpClient client = new HttpClient();
 
         [FunctionName("GetRatings")]
@@ -50,19 +49,17 @@ namespace BFYOC
                 databaseName: "RatingsAPI",
                 collectionName: "Container1", 
                 ConnectionStringSetting = "myCosmosDb",
-                SqlQuery = "SELECT * FROM c WHERE c.userId = '{userId}'")] IEnumerable<Rating> ratings,
-            ILogger log,
-            string userId)
+                SqlQuery = "SELECT * FROM c WHERE c.userId = {userId}")] IEnumerable<Rating> ratings,
+            ILogger log)
         
         {
             try
             {
                 log.LogInformation("C# HTTP trigger function processed a request.");
                 
-                
                 //Get data from body
-                //string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                //dynamic data = JsonConvert.DeserializeObject(requestBody);
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                dynamic data = JsonConvert.DeserializeObject(requestBody);
 
                 if (ratings == null)
                 {
@@ -70,10 +67,8 @@ namespace BFYOC
                 }
 
                 return new OkObjectResult(ratings);
-                
             }
 
-            
             catch(Exception e)
             {
                 Console.WriteLine(e);

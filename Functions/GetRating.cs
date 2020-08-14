@@ -64,14 +64,12 @@ namespace BFYOC
                 {
                     log.LogInformation($"Rating not found");
 
-                    //Return error message
-
                 }
                 else
                 {
                     log.LogInformation($"Found rating, productId={rating.productId}");
-
                 }
+                
                 return new OkObjectResult(rating);
             }
             
