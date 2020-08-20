@@ -28,7 +28,7 @@ namespace BFYOC
 {
     public static class SalesEvents
     {
-        private static readonly HttpClient client = new HttpClient();
+        //private static readonly HttpClient client = new HttpClient();
 
         [FunctionName("SalesEvents")]
         public static async Task Run(
@@ -43,9 +43,9 @@ namespace BFYOC
 
             try
             {
-                log.LogInformation("C# HTTP trigger function processed a request.");
+                log.LogInformation($"C# Queue trigger function processed {eventHubMessages?.Length} items");
 
-                foreach (var message in eventHubMessages)
+                foreach (EventData message in eventHubMessages)
                 {
                     log.LogInformation($"Description={message}");
                     await SaleEvent.AddAsync(message);
