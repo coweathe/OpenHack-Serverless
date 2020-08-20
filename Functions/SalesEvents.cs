@@ -1,61 +1,54 @@
 using System;
-// using System.IO;
-// using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-// using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-// using Microsoft.Azure.Cosmos;
-// using Microsoft.Azure.Documents;
-// using Microsoft.Azure.Documents.Linq;
-// using Microsoft.Azure.WebJobs.Extensions.Http;
-// using Microsoft.AspNetCore.Http;
-// using Microsoft.Azure.WebJobs.Host;
+//using Microsoft.Azure.EventHubs;
 using Azure.Messaging.EventHubs;
-// using Azure.Messaging.EventHubs.Consumer;
-// using Azure.Messaging.EventHubs.Producer;
-// using Azure.Storage.Blobs;
-// using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-//using Microsoft.Azure.WebJobs.Extensions.EventHubs;
-//using Microsoft.Azure.Documents.Client;
-// using Newtonsoft.Json;
-using System.Net.Http;
-//using System.Collections.Generic;
-//using System.Linq;
-// using System.Text;
 
 namespace BFYOC
 {
     public static class SalesEvents
     {
-        //private static readonly HttpClient client = new HttpClient();
-
         [FunctionName("SalesEvents")]
-        public static async Task Run(
-            [EventHubTrigger("pointofsales", Connection = "myEventHub")] EventData[] eventHubMessages, 
-            [CosmosDB( 
-                databaseName: "RatingsAPI",
-                collectionName: "Sales", 
-                ConnectionStringSetting = "myCosmosDb")]
-                IAsyncCollector<EventData> SaleEvent,
-            ILogger log)
+        public static async Task Run([EventHubTrigger("pointofsales", Connection = "myEventHub")] EventData[] events, 
+        [CosmosDB( 
+            databaseName: "RatingsAPI",
+            collectionName: "Sales", 
+            ConnectionStringSetting = "myCosmosDb")]
+            IAsyncCollector<EventData> SaleEvent,
+        ILogger log)
         {
+            var exceptions = new List<Exception>();
 
-            try
+            foreach (EventData eventData in events)
             {
-                log.LogInformation($"C# Queue trigger function processed {eventHubMessages?.Length} items");
-
-                foreach (EventData message in eventHubMessages)
+                try
                 {
-                    log.LogInformation($"Description={message}");
-                    await SaleEvent.AddAsync(message);
+                    //string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
+
+                    // Replace these two lines with your processing logic.
+                    //log.LogInformation($"C# Event Hub trigger function processed a message: {messageBody}");
+                    //await Task.Yield();
+                    await SaleEvent.AddAsync(eventData);
+                }
+                catch (Exception e)
+                {
+                    // We need to keep processing the rest of the batch - capture this exception and continue.
+                    // Also, consider capturing details of the message that failed processing so it can be processed again later.
+                    exceptions.Add(e);
                 }
             }
 
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            // Once processing of the batch is complete, if any messages in the batch failed processing throw an exception so that there is a record of the failure.
+
+            if (exceptions.Count > 1)
+                throw new AggregateException(exceptions);
+
+            if (exceptions.Count == 1)
+                throw exceptions.Single();
         }
     }
 }
