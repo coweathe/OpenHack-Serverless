@@ -15,6 +15,13 @@
             "leaseOptions": {
                 "leasePrefix": "prefix1"
             }
+        },
+        "eventHubs": {
+            "batchCheckpointFrequency": 5,
+            "eventProcessorOptions": {
+                "maxBatchSize": 256,
+                "prefetchCount": 512
+            }
         }
     }
 }
