@@ -3,35 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Microsoft.Azure.EventHubs;
-using Azure.Messaging.EventHubs;
+// using Azure.Messaging.EventHubs;
+// using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+
 
 namespace BFYOC
 {
     public static class SalesEvents
     {
-        [FunctionName("SalesEvents")]
-        public static async Task Run([EventHubTrigger("pointofsales", Connection = "myEventHub")] EventData[] events, 
+    
+    [FunctionName("SalesEvents")]
+        public static async Task Run([EventHubTrigger("pointofsales", Connection = "myEventHub")] string[] events, 
         [CosmosDB( 
             databaseName: "RatingsAPI",
             collectionName: "Sales", 
             ConnectionStringSetting = "myCosmosDb")]
-            IAsyncCollector<EventData> SaleEvent,
+            IAsyncCollector<dynamic> SaleEvent,
         ILogger log)
         {
+            
             var exceptions = new List<Exception>();
 
-            foreach (EventData eventData in events)
+            foreach (var eventData in events)
             {
                 try
                 {
-                    //string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
+                    // string messageBody = Encoding.UTF8.GetString(eventData.Body.Span);
+                    // log.LogInformation($"C# Event Hub trigger function processed a message: {messageBody}");
+                    // await Task.Yield();
 
-                    // Replace these two lines with your processing logic.
-                    //log.LogInformation($"C# Event Hub trigger function processed a message: {messageBody}");
-                    //await Task.Yield();
                     await SaleEvent.AddAsync(eventData);
                 }
                 catch (Exception e)
@@ -42,7 +44,7 @@ namespace BFYOC
                 }
             }
 
-            // Once processing of the batch is complete, if any messages in the batch failed processing throw an exception so that there is a record of the failure.
+            //Once processing of the batch is complete, if any messages in the batch failed processing throw an exception so that there is a record of the failure.
 
             if (exceptions.Count > 1)
                 throw new AggregateException(exceptions);
