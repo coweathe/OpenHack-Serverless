@@ -22,6 +22,20 @@
                 "maxBatchSize": 64,
                 "prefetchCount": 256
             }
+        },
+        "serviceBus": {
+            "prefetchCount": 100,
+            "messageHandlerOptions": {
+                "autoComplete": true,
+                "maxConcurrentCalls": 32,
+                "maxAutoRenewDuration": "00:05:00"
+            },
+            "sessionHandlerOptions": {
+                "autoComplete": false,
+                "messageWaitTimeout": "00:00:30",
+                "maxAutoRenewDuration": "00:55:00",
+                "maxConcurrentSessions": 16
+            }
         }
     }
 }
