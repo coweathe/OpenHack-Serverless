@@ -28,7 +28,11 @@ namespace BFYOC
         [ServiceBus(
             "receipt", 
             Connection = "MyServiceBus")] 
-            IAsyncCollector<dynamic> queueCollector,
+            IAsyncCollector<dynamic> queueCollectorLarge,
+        [ServiceBus(
+            "receiptsmall", 
+            Connection = "MyServiceBus")] 
+            IAsyncCollector<dynamic> queueCollectorSmall,
         ILogger log)
         {
             
@@ -73,14 +77,20 @@ namespace BFYOC
                             storeLocation = json.header.locationId,
                             receiptUrl = json.header.receiptUrl
                          };
-                        
+
                         //Convert rating Object to JSON
                         var ratingJSON = Newtonsoft.Json.JsonConvert.SerializeObject(rating);
 
+                        //Add object to Service Bus based on totalCost amount
+                        if (json.header.totalCost >100) {
+                            log.LogInformation($"Adding large receipt event to Service Bus queue...{ratingJSON}");
+                            await queueCollectorLarge.AddAsync(ratingJSON);
+                        }
+                        else {
+                            log.LogInformation($"Adding small receipt event to Service Bus queue...{ratingJSON}");
+                            await queueCollectorSmall.AddAsync(ratingJSON);
+                        }
 
-                        //Add object to Service Bus
-                        log.LogInformation($"Adding event to Service Bus queue...{ratingJSON}");
-                        await queueCollector.AddAsync(ratingJSON);
                     }
                     else {
                         log.LogInformation("No receipt URL found for sale event.");
