@@ -13,9 +13,9 @@ namespace BFYOC
 {
     public static class CosmosChangeFeedToEventHub
     {
-        private static readonly string Container1EventHubName = "Container1Events";
-        private static readonly string OrdersEventHubName = "OrdersEvents";
-        private static readonly string SalesEventHubName = "SalesEvents";
+        private static readonly string Container1EventHubName = "container1events";
+        private static readonly string OrdersEventHubName = "ordersevents";
+        private static readonly string SalesEventHubName = "salesevents";
         [FunctionName("Container1ToEventHub")]
         //[return: EventHub("aggregate", Connection = "myEventHub")]
         public static async Task Container1ToEventHub(
