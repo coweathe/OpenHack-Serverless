@@ -13,7 +13,9 @@ namespace BFYOC
 {
     public static class CosmosChangeFeedToEventHub
     {
-        private static readonly string EventHubName = "aggregate";
+        private static readonly string Container1EventHubName = "Container1Events";
+        private static readonly string OrdersEventHubName = "OrdersEvents";
+        private static readonly string SalesEventHubName = "SalesEvents";
         [FunctionName("Container1ToEventHub")]
         //[return: EventHub("aggregate", Connection = "myEventHub")]
         public static async Task Container1ToEventHub(
@@ -32,7 +34,7 @@ namespace BFYOC
                 // Build connection string to access event hub within event hub namespace.
                 EventHubsConnectionStringBuilder eventHubConnectionStringBuilder = new EventHubsConnectionStringBuilder(eventHubNamespaceConnection)
                 {
-                    EntityPath = EventHubName
+                    EntityPath = Container1EventHubName
                 };
                 
                 // Create event hub client to send change feed events to event hub.
@@ -67,7 +69,7 @@ namespace BFYOC
                 // Build connection string to access event hub within event hub namespace.
                 EventHubsConnectionStringBuilder eventHubConnectionStringBuilder = new EventHubsConnectionStringBuilder(eventHubNamespaceConnection)
                 {
-                    EntityPath = EventHubName
+                    EntityPath = OrdersEventHubName
                 };
                 
                 // Create event hub client to send change feed events to event hub.
@@ -103,7 +105,7 @@ namespace BFYOC
                 // Build connection string to access event hub within event hub namespace.
                 EventHubsConnectionStringBuilder eventHubConnectionStringBuilder = new EventHubsConnectionStringBuilder(eventHubNamespaceConnection)
                 {
-                    EntityPath = EventHubName
+                    EntityPath = SalesEventHubName
                 };
                 
                 // Create event hub client to send change feed events to event hub.
