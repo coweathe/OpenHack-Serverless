@@ -2,13 +2,10 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text;
-using System.Text.Json;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Net.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+
 
 
 namespace BFYOC {
