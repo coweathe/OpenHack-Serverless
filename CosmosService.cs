@@ -44,6 +44,13 @@ namespace BFYOC {
             Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(responseContent);
             //Get sentiment score value from response
             var sentimentScore = myDeserializedClass.documents[0].score;
+            if (sentimentScore <= 0.3)
+            {
+                logger.LogInformation("Bad review");
+            }
+            else{
+                logger.LogInformation("Good review");
+            }
 
             //Set timestamp
             var timestamp = DateTime.UtcNow;
