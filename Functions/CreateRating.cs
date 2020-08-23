@@ -83,12 +83,13 @@ namespace BFYOC
                     {
                         return (ActionResult)new BadRequestObjectResult("Rating needs to be between 0 and 5");
                     }
-
+                    
                 var ratingCoolService = new CosmosService();
 
                 var rating = await ratingCoolService.CreateRatingFromDocument(data, document, client, log);
 
                 return (ActionResult)new OkObjectResult(rating);
+
             }
             
             catch(Exception e)
