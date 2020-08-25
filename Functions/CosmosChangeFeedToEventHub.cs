@@ -27,7 +27,7 @@ namespace BFYOC
             ILogger log)
             {
             #pragma warning disable CS0618 // Type or member is obsolete
-                string eventHubNamespaceConnection = "Endpoint=sb://bfyoc-eventhub.servicebus.windows.net/;SharedAccessKeyName=Key1;SharedAccessKey=KC8qk7853kdiD0ab2IA8b1bNA7Zr5wOoTAn25RLi7SU=";
+                string eventHubNamespaceConnection = "[INSERT HERE]";
                 //string eventHubNamespaceConnection = ConfigurationSettings.AppSettings["myEventHub"];
             #pragma warning restore CS0618 // Type or member is obsolete
                 
@@ -62,7 +62,7 @@ namespace BFYOC
             ILogger log)
             {
             #pragma warning disable CS0618 // Type or member is obsolete
-                string eventHubNamespaceConnection = "Endpoint=sb://bfyoc-eventhub.servicebus.windows.net/;SharedAccessKeyName=Key1;SharedAccessKey=KC8qk7853kdiD0ab2IA8b1bNA7Zr5wOoTAn25RLi7SU=";
+                string eventHubNamespaceConnection = "[INSERT HERE]";
                 //string eventHubNamespaceConnection = ConfigurationSettings.AppSettings["myEventHub"];
             #pragma warning restore CS0618 // Type or member is obsolete
                 
@@ -98,7 +98,7 @@ namespace BFYOC
 
             {
             #pragma warning disable CS0618 // Type or member is obsolete
-                string eventHubNamespaceConnection = "Endpoint=sb://bfyoc-eventhub.servicebus.windows.net/;SharedAccessKeyName=Key1;SharedAccessKey=KC8qk7853kdiD0ab2IA8b1bNA7Zr5wOoTAn25RLi7SU=";
+                string eventHubNamespaceConnection = "[INSERT HERE]";
                 //string eventHubNamespaceConnection = ConfigurationSettings.AppSettings["myEventHub"];
             #pragma warning restore CS0618 // Type or member is obsolete
 
